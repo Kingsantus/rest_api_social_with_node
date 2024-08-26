@@ -56,8 +56,22 @@ router.post("/login", async (req, res) => {
 })
 
 // LOGOUT
-
+router.get("/logout", async(req,res)=>{
+    try{
+        res.clearCookie("token",{sameSite:"none", secure:true}).status(200).json("User logged out successfully!!");
+    } catch(error) {
+        res.status(500).json(error);
+    }
+})
 
 // FETCH
+router.get("/refetch", async(req,res) => {
+    const token =
+    try{
+
+    } catch(error) {
+        res.status(500).json(error);
+    }
+})
 
 module.exports = router;
