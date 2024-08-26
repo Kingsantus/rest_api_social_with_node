@@ -10,8 +10,17 @@ const app = express();
 // add a dotenv file for url of database
 const dotenv = require("dotenv");
 
+// importing auth router
+const authRoute = require("./routes/auth");
+
 // initializing it to config
 dotenv.config();
+
+// to allow app to accept json data
+app.use(express.json());
+
+// instatiating the middleware
+app.use("/api/auth", authRoute);
 
 
 // server to listen
