@@ -14,6 +14,9 @@ const dotenv = require("dotenv");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 
+// importing path to allow it for middleware
+const path = require('path');
+
 // importing cookieParser to add the cookie value
 const cookieParser = require('cookie-parser');
 
@@ -28,6 +31,8 @@ app.use(express.json());
 
 // allowing app to pass our cookie
 app.use(cookieParser());
+// allowing express to view links in "uploads folder"
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // instatiating the routes
 app.use("/api/auth", authRoute);

@@ -278,6 +278,49 @@ const deleteUserController = async (req, res, next) => {
     }
 }
 
+const searchUserController = async (req, res, next) => {
+    // get the search query from url
+    const { query } = req.params;
+    try {
+        // find user object using regular expression
+        // check the query as a username or fullName
+        const users = await User.find({
+            $or:[
+                {username:{$regex:new RegExp(query, 'i')}},
+                {fullName:{$regex:new RegExp(query, 'i')}}
+            ]
+        });
+        res.status(200).json({users});
+    } catch (error) {
+        next(error);
+    }
+}
+
+const generateFileUrl = (filename) => {
+    // generate the file name with website address
+    // uploads folder and filename
+    return process.env.URL+`/uploads/${filename}`
+}
+
+const uploadProfilePictureController = async (req, res, next) => {
+    // get the userId from url
+    const { userId } = req.params;
+    // extract the file uploaded from request file
+    const { filename } = req.file;
+    try {
+        // get the update the user object using the userId
+        // updating only the generated file url in the file
+        const user = await User.findByIdAndUpdate(userId, {profilePicture:generateFileUrl(filename)},{new:true});
+        // if the user not found throw error
+        if (!user) {
+            throw new CustomError("User not found", 404);
+        }
+        res.status(200).json({message:"Profile picture updated successfully", user});
+
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = {
     getUserController,
@@ -288,4 +331,6 @@ module.exports = {
     unblockUserController,
     getBlockedUsersController,
     deleteUserController,
+    searchUserController,
+    uploadProfilePictureController,
 }

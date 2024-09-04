@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../middlewares/upload');
 const { 
     getUserController,
     updateUserController,
@@ -9,6 +10,8 @@ const {
     unblockUserController,
     getBlockedUsersController,
     deleteUserController,
+    searchUserController,
+    uploadProfilePictureController,
 } = require('../controllers/userController');
 
 // GET USER
@@ -34,6 +37,17 @@ router.get("/blocked/:userId", getBlockedUsersController);
 
 // DELETE USER 
 router.delete("/delete/:userId", deleteUserController);
+
+// SEARCH USER
+router.get("/search/:query", searchUserController);
+
+// UPDATE PROFILE PICTURE
+// upload.single("profilePicture") changes the name of the file to profilePicture
+router.put(
+    "/update-profile-picture/:userId",
+    upload.single("profilePicture"),
+    uploadProfilePictureController
+)
 
 
 module.exports = router;
