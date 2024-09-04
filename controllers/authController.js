@@ -23,7 +23,7 @@ const registerContoller = async (req, res, next) => {
     }
 }
 
-const loginController = async (req, res) => {
+const loginController = async (req, res, next) => {
     try{
         let user;
         // from the json data send check if the user with
@@ -57,7 +57,7 @@ const loginController = async (req, res) => {
     }
 }
 
-const logoutController = async (req, res) => {
+const logoutController = async (req, res, next) => {
     try{
         // delete the cookies created and log user out
         res.clearCookie("token",{sameSite:"none", secure:true}).status(200).json("User logged out successfully!!");
@@ -66,7 +66,7 @@ const logoutController = async (req, res) => {
     }
 }
 
-const refetchUserController = async(req,res) => {
+const refetchUserController = async(req,res, next) => {
     // get token from the cookies
     const token = req.cookies.token;
     // verify the token with jwt verify and send error if not verified

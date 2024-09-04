@@ -10,8 +10,9 @@ const app = express();
 // add a dotenv file for url of database
 const dotenv = require("dotenv");
 
-// importing auth router
+// importing auth, users router
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
 
 // importing cookieParser to add the cookie value
 const cookieParser = require('cookie-parser');
@@ -30,6 +31,7 @@ app.use(cookieParser());
 
 // instatiating the routes
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 // instantiationg errorHandler to app
 app.use(errorHandler);
