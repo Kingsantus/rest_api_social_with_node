@@ -16,6 +16,9 @@ const authRoute = require("./routes/auth");
 // importing cookieParser to add the cookie value
 const cookieParser = require('cookie-parser');
 
+// importing error handler as the middleware
+const { errorHandler, CustomError } = require("./middlewares/error");
+
 // initializing it to config
 dotenv.config();
 
@@ -25,9 +28,11 @@ app.use(express.json());
 // allowing app to pass our cookie
 app.use(cookieParser());
 
-// instatiating the middleware
+// instatiating the routes
 app.use("/api/auth", authRoute);
 
+// instantiationg errorHandler to app
+app.use(errorHandler);
 
 // server to listen
 app.listen(process.env.PORT, () => {

@@ -1,13 +1,14 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { CustomError } = require("../middlewares/error");
 
-const registerContoller = async (req, res) => {
+const registerContoller = async (req, res, next) => {
     try{
         const {password, username, email}=req.body;
         const existingUser=await User.findOne({ $or: [{username}, {email}] });
         if (existingUser){
-            res.status(400).json("Username or Email already exists!");
+            throw new CustomError("Username or Email already exists!", 400);
         }
         // if (confirmPassword != password){
         //     res.status(400).json("Both password is incorrect");
@@ -18,7 +19,7 @@ const registerContoller = async (req, res) => {
         const savedUser=await newUser.save();
         res.status(201).json(savedUser);
     } catch(error) {
-        res.status(500).json(error);
+        next(error);
     }
 }
 
@@ -35,7 +36,7 @@ const loginController = async (req, res) => {
 
         // return error if no user have same email
         if(!user) {
-            return res.status(404).json("User not found!");
+            throw new CustomError("User not found!", 404);
         }
 
         // verify the password of user found with sent password
@@ -43,7 +44,7 @@ const loginController = async (req, res) => {
 
         // if the password don't match throw error
         if(!match) {
-            return res.status(401).json("wrong credentials");
+            throw new CustomError("Wrong Credentials!", 401)
         }
 
         const {password,...data}=user._doc;
@@ -52,7 +53,7 @@ const loginController = async (req, res) => {
         // storing the token in the cookie
         res.cookie("token",token).status(200).json(data);
     } catch(error) {
-        res.status(500).json(error);
+        next(error);
     }
 }
 
@@ -61,7 +62,7 @@ const logoutController = async (req, res) => {
         // delete the cookies created and log user out
         res.clearCookie("token",{sameSite:"none", secure:true}).status(200).json("User logged out successfully!!");
     } catch(error) {
-        res.status(500).json(error);
+        next(error);
     }
 }
 
@@ -71,18 +72,18 @@ const refetchUserController = async(req,res) => {
     // verify the token with jwt verify and send error if not verified
     jwt.verify(token,process.env.JWT_SECRET, {}, async(err,data) => {
         if(err){
-            res.status(403).json(err);
+            throw new CustomError(err, 404);
         }
-    })
-    try{
-        const id = data._id;
-        // find the id of the user found in the token
-        const user= await User.findOne({_id:id});
-        // return the user info
-        res.status(200).json(user);
-    } catch(error) {
-        res.status(500).json(error);
-    }
+        try{
+            const id = data._id;
+            // find the id of the user found in the token
+            const user = await User.findOne({_id:id});
+            // return the user info
+            res.status(200).json(user);
+        } catch(error) {
+            next(error);
+        }
+    });
 };
 
 module.exports = {
