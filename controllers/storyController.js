@@ -82,8 +82,35 @@ const getUserStoriesController = async (req, res, next) => {
     }
 }
 
+const deleteStoryController = async (req, res, next) => {
+    // get the id of story from url
+    const { storyId } = req.params;
+    try {
+        // check if story exist
+        const story = await User.findById(storyId);
+        // throw error if not found
+        if (!story){
+            throw new CustomError("Story not found", 404);
+        }
+        // find and delete
+        await Story.findByIdAndDelete(storyId);
+        // save story
+        Story.save();
+
+        res.status(200).json({message:"Story Deleted Successfully"});
+    } catch(error) {
+        next(error);
+    }
+}
+
+const deleteUserStoriesController = async (req, res, next) => {
+
+}
+
 module.exports = {
     createStoryController,
     getStoriesController,
     getUserStoriesController,
+    deleteStoryController,
+    deleteUserStoriesController,
 }
