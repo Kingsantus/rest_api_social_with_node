@@ -5,6 +5,9 @@ const {
     createPostController,
     createPostWithImageController,
     updatePostController,
+    getPostsController,
+    getUserPostsController,
+    deletePostController,
 } = require('../controllers/postController');
 
 
@@ -17,6 +20,15 @@ router.post("/create/:userId", upload.array("images",5),createPostWithImageContr
 
 // UPDATE POST
 router.put("/update/:postId", updatePostController);
+
+// GET ALL POSTS
+router.get("/all/:userId", getPostsController);
+
+// GET USER POSTS
+router.get("/user/:userId", getUserPostsController);
+
+// DELETE A POST
+router.delete("/delete/:postId", deletePostController);
 
 
 module.exports = router;
