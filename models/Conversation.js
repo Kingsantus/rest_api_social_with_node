@@ -2,7 +2,7 @@
 
 const { default: mongoose } = require("mongoose");
 
-// modeule for chat schema
+// module for chat schema
 
 
 const conversationSchema = new mongoose.Schema({

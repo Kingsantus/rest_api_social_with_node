@@ -16,6 +16,7 @@ const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const commentRoute = require("./routes/comments");
 const storyRoute = require("./routes/stories");
+const conversationRoute = require("./routes/conversations");
 
 // importing path to allow it for middleware
 const path = require('path');
@@ -43,6 +44,7 @@ app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 app.use("/api/story", storyRoute);
+app.use("/api/conversation", conversationRoute);
 
 // instantiationg errorHandler to app
 app.use(errorHandler);

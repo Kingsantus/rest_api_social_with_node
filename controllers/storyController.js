@@ -104,7 +104,23 @@ const deleteStoryController = async (req, res, next) => {
 }
 
 const deleteUserStoriesController = async (req, res, next) => {
+    // get user id from url
+    const { userId } = req.params;
+    try {
+        // check if user exist
+        const user = await User.findById(userId);
+        // throw error if not found
+        if (!user){
+            throw new CustomError("User not found", 404);
+        }
+        // find and delete
+        await Story.deleteMany({user:userId});
 
+        res.status(200).json({message:"All Stories Deleted Successfully"});
+
+    } catch(error) {
+        next(error);
+    }
 }
 
 module.exports = {
