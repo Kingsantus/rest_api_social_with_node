@@ -21,10 +21,10 @@ const commentSchema = new mongoose.Schema({
         trim:true,
         lowercase:true,
     },
-    likes:{
+    likes:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-    },
+    }],
     replies:[{
         user:{
             type:mongoose.Schema.Types.ObjectId,
