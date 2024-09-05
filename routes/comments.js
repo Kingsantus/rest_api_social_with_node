@@ -9,6 +9,8 @@ const {
     deleteReplyCommentController,
     likeCommentController,
     dislikeCommentController,
+    likeReplyCommentController,
+    dislikeRelpyCommentController,
 } = require('../controllers/commentController');
 const router = express.Router();
 
@@ -40,8 +42,10 @@ router.post("/like/:commentId", likeCommentController);
 // UNLIKE COMMENT
 router.post("/dislike/:commentId", dislikeCommentController);
 
-// LIKE REPLY COMMENT 
+// LIKE A REPLY COMMENT 
+router.post("/:commentId/replies/like/:replyId", likeReplyCommentController);
 
 // UNLIKE REPLY COMMENT
+router.post("/:commentId/replies/dislike/:replyId", dislikeRelpyCommentController);
 
 module.exports = router;
