@@ -13,6 +13,7 @@ const dotenv = require("dotenv");
 // importing auth, users router
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
+const postRoute = require("./routes/posts");
 
 // importing path to allow it for middleware
 const path = require('path');
@@ -37,6 +38,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // instatiating the routes
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/post", postRoute);
 
 // instantiationg errorHandler to app
 app.use(errorHandler);

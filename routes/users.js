@@ -12,6 +12,7 @@ const {
     deleteUserController,
     searchUserController,
     uploadProfilePictureController,
+    uploadCoverPictureController,
 } = require('../controllers/userController');
 
 // GET USER
@@ -49,5 +50,11 @@ router.put(
     uploadProfilePictureController
 )
 
+// UPDATE COVER PICTURE
+router.put(
+    "/update-cover-picture/:userId",
+    upload.single("coverPicture"),
+    uploadCoverPictureController
+)
 
 module.exports = router;
